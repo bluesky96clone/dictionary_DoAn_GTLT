@@ -15,7 +15,6 @@ class AVLTree {
 		Node* minValueNode(Node* node);
 		void preOrderShow(Node* r) const;
 		
-		//cac phuong thuc can bang cay
 		Node* rightRotate(Node* y);
 		Node* leftRotate(Node* x);
 		int getBalanceFactor(Node* node);
@@ -26,7 +25,7 @@ class AVLTree {
 		AVLTree();
 		~AVLTree();
 		
-
+		
 		//cac phuong thuc thao tac voi tu dien
 		void insert(string word, string meaning);
 		void search(string word) const;
@@ -34,7 +33,8 @@ class AVLTree {
 		void show() const;
 		void showWord(Node* node) const;
 		
-
+		//cac phuong thuc can bang cay
+		
 };
 
 #endif
