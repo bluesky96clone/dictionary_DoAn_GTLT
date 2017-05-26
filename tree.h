@@ -26,7 +26,7 @@ class AVLTree {
 		AVLTree();
 		~AVLTree();
 		
-		
+
 		//cac phuong thuc thao tac voi tu dien
 		void insert(string word, string meaning);
 		void search(string word) const;
