@@ -1,8 +1,8 @@
 #include "node.h"
 
 Node::Node() {
-	this->left = NULL;
-	this->right = NULL;
+	this->left 	 = NULL;
+	this->right  = NULL;
 	this->height = 0;
 }
 Node::Node(string word, string meaning) : word(word), meaning(meaning) {
