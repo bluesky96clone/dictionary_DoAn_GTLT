@@ -1,5 +1,7 @@
 #ifndef TREE_H
 #define TREE_H
+#include <iostream>
+#include <string>
 #include "node.h"
 
 class AVLTree {
@@ -15,16 +17,17 @@ class AVLTree {
 		Node* minValueNode(Node* node);
 		void preOrderShow(Node* r) const;
 		
+		//cac phuong thuc can bang cay
 		Node* rightRotate(Node* y);
 		Node* leftRotate(Node* x);
 		int getBalanceFactor(Node* node);
+		
 	public:
 		friend class Node;
 		
 		//constructor and destructor
 		AVLTree();
 		~AVLTree();
-		
 		
 		//cac phuong thuc thao tac voi tu dien
 		void insert(string word, string meaning);
@@ -33,8 +36,12 @@ class AVLTree {
 		void show() const;
 		void showWord(Node* node) const;
 		
-		//cac phuong thuc can bang cay
-		
+		//cac phuong thuc thao tac voi file
+		void saveDictData(char* path);
+		void saveDocument(char* path);
+		void loadDictData(char* path);
+		void checkDocumentByDict(char* path);
+		void viewDocument(char* path);
 };
 
 #endif

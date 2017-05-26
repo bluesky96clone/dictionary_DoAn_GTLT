@@ -1,4 +1,9 @@
+#include <iostream>
+#include <string>
+#include <fstream>
 #include "tree.h"
+
+using namespace std;
 
 AVLTree::AVLTree() {
 	this->root = NULL;
@@ -246,4 +251,39 @@ Node* AVLTree::deleteWord(Node* node, string word) {
 	}
 	return node;
 }
-
+void AVLTree::saveDictData(char* path){
+	
+}
+void AVLTree::saveDocument(char* path){
+	
+}
+void AVLTree::loadDictData(char* path){
+	fstream f;
+	f.exceptions ( fstream::failbit | fstream::badbit );
+	string word, mean;
+	try{
+		f.open(path, ios::in);
+		while(!f.eof()){
+			getline(f, word);
+			getline(f, mean);
+			insert(word, mean);
+		}
+		f.close();
+	}catch(fstream::failure e){
+		cerr << "Exception opening/reading/closing file\n";
+	}	
+}
+void AVLTree::checkDocumentByDict(char* path){
+	
+}
+void AVLTree::viewDocument(char* path){
+	fstream f;
+	f.exceptions ( fstream::failbit | fstream::badbit );
+	try{
+		f.open(path, ios::in);
+		while(!f.eof())		cout << f.get();
+		f.close();
+	}catch(fstream::failure e){
+		cerr << "Exception opening/reading/closing file\n";
+	}	
+}
