@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <algorithm>
 #include "tree.h"
 
 using namespace std;
@@ -21,14 +22,14 @@ AVLTree::~AVLTree() {
 }
 
 Node* AVLTree::rightRotate(Node* y) {
-	Node* x = y->left;
+	Node* x  = y->left;
 	Node* T1 = x->left;
 	Node* T2 = x->right;
 	Node* T3 = y->right;
 	
 	// Perform rotation
 	x->right = y;
-	y->left = T2;
+	y->left  = T2;
 	
 	// Update heights
 	y->height = max(T2->getHeight(), T3->getHeight()) + 1;
@@ -39,13 +40,13 @@ Node* AVLTree::rightRotate(Node* y) {
 }
 
 Node* AVLTree::leftRotate(Node* x) {
-	Node* y = x->right;
+	Node* y  = x->right;
 	Node* T1 = x->left;
 	Node* T2 = y->left;
 	Node* T3 = y->right;
 	
 	// Perform rotation
-	y->left = x;
+	y->left  = x;
 	x->right = T2;
 	
 	// Update heights
@@ -274,7 +275,22 @@ void AVLTree::loadDictData(char* path){
 	}	
 }
 void AVLTree::checkDocumentByDict(char* path){
-	
+	fstream f;
+	f.open(path, ios::in);
+	string word;
+	char c;
+	while(!f.eof()){
+		word.clear();
+		while(isLetter(c)){
+			word += c;
+			c = f.get();			
+		}
+		if(!word.empty()){
+			if(isExist(word)){
+				cout << word << " ";
+			}
+		}
+	}
 }
 void AVLTree::viewDocument(char* path){
 	fstream f;
@@ -286,4 +302,13 @@ void AVLTree::viewDocument(char* path){
 	}catch(fstream::failure e){
 		cerr << "Exception opening/reading/closing file\n";
 	}	
+}
+
+bool AVLTree::isLetter(char c){
+	return ((c>='a' && c<='z') || (c>='A' && c<='Z'));
+}
+bool AVLTree::isExist(string word){
+	transform(word.begin(), word.end(), word.begin(), ::tolower);
+	Node* foo = searchWord(this->root, word);
+	return (foo != NULL);
 }

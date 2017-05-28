@@ -22,6 +22,9 @@ class AVLTree {
 		Node* leftRotate(Node* x);
 		int getBalanceFactor(Node* node);
 		
+		//cac thuc kiem tra tu
+		bool isLetter(char c);
+		bool isExist(string word);
 	public:
 		friend class Node;
 		
@@ -42,6 +45,7 @@ class AVLTree {
 		void loadDictData(char* path);
 		void checkDocumentByDict(char* path);
 		void viewDocument(char* path);
+		
 };
 
 #endif
