@@ -8,7 +8,7 @@ using namespace std;
 
 AVLTree::AVLTree() {
 	this->root = NULL;
-	int size = 0;
+	this->size = 0;
 }
 AVLTree::~AVLTree() {
 //	if (root != NULL) {
@@ -19,6 +19,7 @@ AVLTree::~AVLTree() {
 //			delete
 //		}
 //	}
+	size--;
 }
 
 Node* AVLTree::rightRotate(Node* y) {
@@ -63,10 +64,10 @@ int AVLTree::getBalanceFactor(Node* node) {
 }
 
 void AVLTree::insert(string word, string meaning) {
+	//transform(word.begin(), word.end(), word.begin(), ::tolower);
 	this->root = insertWord(this->root, word, meaning);
 	this->size++;
-	cout << "Word inserted!" << endl;
-	cout << root->getHeight() << endl;
+	//cout << "Word inserted!" << endl;
 }
 
 Node* AVLTree::insertWord(Node* node, string word, string meaning) {
@@ -136,6 +137,7 @@ void AVLTree::preOrderShow(Node* r) const {
 	}
 }
 void AVLTree::search(string word) const {
+	transform(word.begin(), word.end(), word.begin(), ::tolower);
 	Node* result = searchWord(this->root, word);
 	if (result == NULL)
 		cout << "Not found!";
@@ -165,11 +167,11 @@ Node* AVLTree::minValueNode(Node* node) {
 }
 void AVLTree::del(string word) {
 	//cout << "Del function" << endl;
+	transform(word.begin(), word.end(), word.begin(), ::tolower);
 	if (searchWord(this->root, word)) {
 		this->root = deleteWord(this->root, word);
 		this->size--;
 		cout << "Word deleted!" << endl;
-		cout << root->getHeight() << endl;
 	}
 	else
 		cout << "Can't find this word!";
@@ -252,27 +254,41 @@ Node* AVLTree::deleteWord(Node* node, string word) {
 	}
 	return node;
 }
-void AVLTree::saveDictData(char* path){
-	
+void AVLTree::saveWord(Node* node, fstream& f){	
+	f << node->word << "\n" << node->meaning << endl;
 }
-void AVLTree::saveDocument(char* path){
-	
+void AVLTree::preOrderSave(Node* r, fstream& f){
+	if (r != NULL) {
+		preOrderSave(r->left, f);
+		saveWord(r, f);
+		preOrderSave(r->right, f);
+	}
+}
+void AVLTree::saveDictData(char* path){
+	fstream f;
+	f.open(path, ios::out);
+	f << this->size << endl;
+	preOrderSave(root, f);
+	f.close();
 }
 void AVLTree::loadDictData(char* path){
-	fstream f;
-	f.exceptions ( fstream::failbit | fstream::badbit );
+	//this->~AVLTree();
+	
 	string word, mean;
-	try{
-		f.open(path, ios::in);
-		while(!f.eof()){
-			getline(f, word);
-			getline(f, mean);
-			insert(word, mean);
-		}
-		f.close();
-	}catch(fstream::failure e){
-		cerr << "Exception opening/reading/closing file\n";
-	}	
+	fstream f;
+	f.open(path, ios::in);
+	
+	int numOfWord = 0;
+	f >> numOfWord;
+	f.seekg(3);
+	 
+	while(!f.eof()){
+		getline(f, word);
+		getline(f, mean);
+		insert(word, mean);
+		if(--numOfWord  == 0)	break;
+	}
+	f.close();	
 }
 void AVLTree::checkDocumentByDict(char* path){
 	fstream f;
@@ -294,14 +310,13 @@ void AVLTree::checkDocumentByDict(char* path){
 }
 void AVLTree::viewDocument(char* path){
 	fstream f;
-	f.exceptions ( fstream::failbit | fstream::badbit );
-	try{
-		f.open(path, ios::in);
-		while(!f.eof())		cout << f.get();
-		f.close();
-	}catch(fstream::failure e){
-		cerr << "Exception opening/reading/closing file\n";
-	}	
+	f.open(path, ios::in);
+	string doc;
+	while(!f.eof()){
+		getline(f, doc);
+		cout << doc << endl;
+	}
+	f.close();	
 }
 
 bool AVLTree::isLetter(char c){
